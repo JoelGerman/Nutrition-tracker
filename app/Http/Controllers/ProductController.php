@@ -10,14 +10,20 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->input('search');
+        
         $products = Product::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }) 
             ->orderBy('name')
             ->get();
 
         return Inertia::render('Products/Index', [
             'products' => $products,
+            'search' => $search,
         ]);
     }
 

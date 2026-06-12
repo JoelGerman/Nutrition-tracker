@@ -1,3 +1,5 @@
+import { router } from '@inertiajs/react';
+
 type Product = {
     id: number;
     name: string;
@@ -9,11 +11,11 @@ type Product = {
 
 type Props = {
     products: Product[];
+    search?: string;
 };
 
-export default function Index({ products }: Props) {
+export default function Index({ products, search = '' }: Props) {
     return (
-        
         <div className="mx-auto max-w-5xl p-6">
             <h1 className="mb-6 text-2xl font-bold">Products</h1>
             <a
@@ -22,6 +24,34 @@ export default function Index({ products }: Props) {
             >
                 Add product
             </a>
+            
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+
+                    const form = e.currentTarget;
+                    const formData = new FormData(form);
+                    const searchValue = formData.get('search') as string;
+
+                    router.get('/products', { search: searchValue }, { preserveState: true });
+                }}
+                className="mb-4 flex gap-2"
+            >
+                <input
+                    name="search"
+                    defaultValue={search}
+                    placeholder="Search product..."
+                    className="w-full rounded border p-2"
+                />
+
+                <button
+                    type="submit"
+                    className="rounded bg-white px-4 py-2 font-medium text-black"
+                >
+                    Search
+                </button>
+            </form>
+
             <div className="overflow-hidden rounded-lg border">
                 <table className="w-full border-collapse text-left">
                     <thead>
