@@ -13,9 +13,15 @@ type Props = {
 
 export default function Index({ products }: Props) {
     return (
+        
         <div className="mx-auto max-w-5xl p-6">
             <h1 className="mb-6 text-2xl font-bold">Products</h1>
-
+            <a
+                href="/products/create"
+                className="mb-4 inline-block rounded bg-white px-4 py-2 font-medium text-black"
+            >
+                Add product
+            </a>
             <div className="overflow-hidden rounded-lg border">
                 <table className="w-full border-collapse text-left">
                     <thead>
