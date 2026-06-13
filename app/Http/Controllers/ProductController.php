@@ -13,18 +13,30 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->input('search');
-        
+        $user = $request->user();
+
         $products = Product::query()
+            ->when(! $user?->isAdmin(), function ($query) use ($user) {
+                $query->where(function ($query) use ($user) {
+                    $query->whereNull('user_id');
+
+                    if ($user) {
+                        $query->orWhere('user_id', $user->id);
+                    }
+                });
+            })
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
-            }) 
+            })
             ->orderBy('name')
             ->get();
 
         return Inertia::render('Products/Index', [
             'products' => $products,
             'search' => $search,
-            'canDeleteProducts' => $request->user()?->isAdmin() ?? false,
+            'canCreateProducts' => $user !== null,
+            'canAddToDay' => $user !== null,
+            'canDeleteProducts' => $user?->isAdmin() ?? false,
         ]);
     }
 

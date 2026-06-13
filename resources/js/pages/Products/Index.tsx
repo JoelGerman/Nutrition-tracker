@@ -12,6 +12,8 @@ type Product = {
 type Props = {
     products: Product[];
     search?: string;
+    canCreateProducts: boolean;
+    canAddToDay: boolean;
     canDeleteProducts: boolean;
 };
 
@@ -54,17 +56,26 @@ function AddToDayForm({ product }: { product: Product }) {
     );
 }
 
-export default function Index({ products, search = '', canDeleteProducts }: Props) {
+export default function Index({
+    products,
+    search = '',
+    canCreateProducts,
+    canAddToDay,
+    canDeleteProducts,
+}: Props) {
     return (
         <div className="mx-auto max-w-5xl p-6">
             <h1 className="mb-6 text-2xl font-bold">Products</h1>
-            <a
-                href="/products/create"
-                className="mb-4 inline-block rounded bg-white px-4 py-2 font-medium text-black"
-            >
-                Add product
-            </a>
-            
+
+            {canCreateProducts && (
+                <a
+                    href="/products/create"
+                    className="mb-4 inline-block rounded bg-white px-4 py-2 font-medium text-black"
+                >
+                    Add product
+                </a>
+            )}
+
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -113,29 +124,37 @@ export default function Index({ products, search = '', canDeleteProducts }: Prop
                                 <td className="p-3">{product.protein_per_100g}</td>
                                 <td className="p-3">{product.carbs_per_100g}</td>
                                 <td className="p-3">{product.fat_per_100g}</td>
+
                                 <td className="p-3">
-                                    <AddToDayForm product={product} />
-                            </td>
+                                    {canAddToDay ? (
+                                        <AddToDayForm product={product} />
+                                    ) : (
+                                        <span className="text-sm text-gray-400">Login to add</span>
+                                    )}
+                                </td>
+
                                 <td className="p-3">
                                     <div className="flex gap-2">
-                                <a
-                                    href={`/products/${product.id}/edit`}
-                                    className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
-                                >
-                                    Edit
-                                </a>
+                                        {canCreateProducts && (
+                                            <a
+                                                href={`/products/${product.id}/edit`}
+                                                className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
+                                            >
+                                                Edit
+                                            </a>
+                                        )}
 
-                                {canDeleteProducts && (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        router.delete(`/products/${product.id}`);
-                                    }}
-                                    className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white"
-                                >
-                                        Delete
-                                        </button>
-                                )}
+                                        {canDeleteProducts && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    router.delete(`/products/${product.id}`);
+                                                }}
+                                                className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
