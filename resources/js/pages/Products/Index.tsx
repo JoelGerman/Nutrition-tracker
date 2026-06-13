@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
 type Product = {
     id: number;
@@ -13,6 +13,45 @@ type Props = {
     products: Product[];
     search?: string;
 };
+
+function AddToDayForm({ product }: { product: Product }) {
+    const { data, setData, post, processing, errors } = useForm({
+        product_id: product.id,
+        amount: '',
+    });
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault();
+
+        post('/daily-entries');
+    }
+
+    return (
+        <form onSubmit={submit} className="flex items-center gap-2">
+            <input
+                type="number"
+                min="1"
+                step="1"
+                placeholder="grams"
+                value={data.amount}
+                onChange={(e) => setData('amount', e.target.value)}
+                className="w-24 rounded border p-2"
+            />
+
+            <button
+                type="submit"
+                disabled={processing}
+                className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
+            >
+                Add
+            </button>
+
+            {errors.amount && (
+                <div className="text-sm text-red-500">{errors.amount}</div>
+            )}
+        </form>
+    );
+}
 
 export default function Index({ products, search = '' }: Props) {
     return (
@@ -61,6 +100,7 @@ export default function Index({ products, search = '' }: Props) {
                             <th className="p-3">Protein / 100g</th>
                             <th className="p-3">Carbs / 100g</th>
                             <th className="p-3">Fat / 100g</th>
+                            <th className="p-3">Add to day</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,6 +111,9 @@ export default function Index({ products, search = '' }: Props) {
                                 <td className="p-3">{product.protein_per_100g}</td>
                                 <td className="p-3">{product.carbs_per_100g}</td>
                                 <td className="p-3">{product.fat_per_100g}</td>
+                                <td className="p-3">
+                                    <AddToDayForm product={product} />
+                                </td>
                             </tr>
                         ))}
                     </tbody>
