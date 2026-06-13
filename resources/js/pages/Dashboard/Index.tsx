@@ -1,3 +1,5 @@
+import { router } from '@inertiajs/react';
+
 type Product = {
     id: number;
     name: string;
@@ -75,12 +77,13 @@ export default function Index({ entries, totals }: Props) {
                             <th className="p-3">Protein</th>
                             <th className="p-3">Carbs</th>
                             <th className="p-3">Fat</th>
+                            <th className="p-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {entries.length === 0 && (
                             <tr>
-                                <td className="p-3" colSpan={6}>
+                                <td className="p-3" colSpan={7}>
                                     No food added today.
                                 </td>
                             </tr>
@@ -94,6 +97,17 @@ export default function Index({ entries, totals }: Props) {
                                 <td className="p-3">{toNumber(entry.total_protein).toFixed(1)}g</td>
                                 <td className="p-3">{toNumber(entry.total_carbs).toFixed(1)}g</td>
                                 <td className="p-3">{toNumber(entry.total_fat).toFixed(1)}g</td>
+                                <td className="p-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            router.delete(`/daily-entry-products/${entry.id}`);
+                                        }}
+                                        className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyEntryProduct;
 use App\Models\DailyEntry;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,16 @@ class DailyEntryController extends Controller
             'total_carbs' => $product->carbs_per_100g * $amount / 100,
             'total_fat' => $product->fat_per_100g * $amount / 100,
         ]);
+        
 
         return redirect()->route('products.index');
     }
+
+    public function destroy(DailyEntryProduct $dailyEntryProduct): RedirectResponse
+    {
+        $dailyEntryProduct->delete();
+
+        return redirect()->route('dashboard');
+    }
 }
+

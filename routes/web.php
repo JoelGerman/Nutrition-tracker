@@ -22,6 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/daily-entries', [DailyEntryController::class, 'store'])
         ->name('daily-entries.store');
+    
+    Route::delete('/daily-entry-products/{dailyEntryProduct}', [DailyEntryController::class, 'destroy'])
+    ->name('daily-entry-products.destroy');
 
 });
 
