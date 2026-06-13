@@ -24,6 +24,7 @@ class ProductController extends Controller
         return Inertia::render('Products/Index', [
             'products' => $products,
             'search' => $search,
+            'canDeleteProducts' => $request->user()?->isAdmin() ?? false,
         ]);
     }
 
@@ -72,6 +73,15 @@ class ProductController extends Controller
         ]);
 
         $product->update($validated);
+
+        return redirect()->route('products.index');
+    }
+
+    public function destroy(Request $request, Product $product): RedirectResponse
+    {
+        abort_unless($request->user()?->isAdmin(), 403);
+
+        $product->delete();
 
         return redirect()->route('products.index');
     }
