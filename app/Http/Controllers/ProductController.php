@@ -53,4 +53,26 @@ class ProductController extends Controller
 
         return redirect()->route('products.index');
     }
+
+    public function edit(Product $product): Response
+    {
+        return Inertia::render('Products/Edit', [
+            'product' => $product,
+        ]);
+    }
+
+    public function update(Request $request, Product $product): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'calories_per_100g' => ['required', 'numeric', 'min:0'],
+            'protein_per_100g' => ['required', 'numeric', 'min:0'],
+            'carbs_per_100g' => ['required', 'numeric', 'min:0'],
+            'fat_per_100g' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $product->update($validated);
+
+        return redirect()->route('products.index');
+    }
 }

@@ -101,6 +101,7 @@ export default function Index({ products, search = '' }: Props) {
                             <th className="p-3">Carbs / 100g</th>
                             <th className="p-3">Fat / 100g</th>
                             <th className="p-3">Add to day</th>
+                            <th className="p-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,6 +114,14 @@ export default function Index({ products, search = '' }: Props) {
                                 <td className="p-3">{product.fat_per_100g}</td>
                                 <td className="p-3">
                                     <AddToDayForm product={product} />
+                                </td>
+                                <td className="p-3">
+                                    <a
+                                        href={`/products/${product.id}/edit`}
+                                        className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
+                                    >
+                                        Edit
+                                    </a>
                                 </td>
                             </tr>
                         ))}
