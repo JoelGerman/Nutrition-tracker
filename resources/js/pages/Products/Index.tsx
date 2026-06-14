@@ -2,6 +2,7 @@ import { router, useForm } from '@inertiajs/react';
 
 type Product = {
     id: number;
+    user_id: number | null;
     name: string;
     calories_per_100g: number;
     protein_per_100g: number;
@@ -15,6 +16,7 @@ type Props = {
     canCreateProducts: boolean;
     canAddToDay: boolean;
     canDeleteProducts: boolean;
+    currentUserId: number | null;
 };
 
 function AddToDayForm({ product }: { product: Product }) {
@@ -62,6 +64,7 @@ export default function Index({
     canCreateProducts,
     canAddToDay,
     canDeleteProducts,
+    currentUserId,
 }: Props) {
     return (
         <div className="mx-auto max-w-5xl p-6">
@@ -144,7 +147,7 @@ export default function Index({
                                             </a>
                                         )}
 
-                                        {canDeleteProducts && (
+                                        {(canDeleteProducts || product.user_id === currentUserId) && (
                                             <button
                                                 type="button"
                                                 onClick={() => {

@@ -37,6 +37,7 @@ class ProductController extends Controller
             'canCreateProducts' => $user !== null,
             'canAddToDay' => $user !== null,
             'canDeleteProducts' => $user?->isAdmin() ?? false,
+            'currentUserId' => $user?->id,    
         ]);
     }
 
@@ -91,7 +92,12 @@ class ProductController extends Controller
 
     public function destroy(Request $request, Product $product): RedirectResponse
     {
-        abort_unless($request->user()?->isAdmin(), 403);
+        $user = $request->user();
+
+        abort_unless(
+            $user?->isAdmin() || $product->user_id === $user?->id,
+            403
+        );
 
         $product->delete();
 
