@@ -68,8 +68,14 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function edit(Product $product): Response
+    public function edit(Request $request, Product $product): Response
     {
+        $user = $request->user();
+
+        abort_unless(
+        $user?->isAdmin() || $product->user_id === $user?->id,
+        403
+        );
         return Inertia::render('Products/Edit', [
             'product' => $product,
         ]);
@@ -77,6 +83,12 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product): RedirectResponse
     {
+        $user = $request->user();
+
+        abort_unless(
+            $user?->isAdmin() || $product->user_id === $user?->id,
+            403
+        );
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'calories_per_100g' => ['required', 'numeric', 'min:0'],

@@ -138,7 +138,7 @@ export default function Index({
 
                                 <td className="p-3">
                                     <div className="flex gap-2">
-                                        {canCreateProducts && (
+                                        {(canDeleteProducts || product.user_id === currentUserId) && (
                                             <a
                                                 href={`/products/${product.id}/edit`}
                                                 className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
