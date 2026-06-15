@@ -9,11 +9,12 @@ class Product extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'category',
         'calories_per_100g',
         'protein_per_100g',
         'carbs_per_100g',
         'fat_per_100g',
-];
+    ];
 
     public function user()
     {

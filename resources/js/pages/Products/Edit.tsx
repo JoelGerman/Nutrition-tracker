@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 type Product = {
     id: number;
     name: string;
+    category: string;
     calories_per_100g: number | string;
     protein_per_100g: number | string;
     carbs_per_100g: number | string;
@@ -16,6 +17,7 @@ type Props = {
 export default function Edit({ product }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         name: product.name,
+        category: product.category,
         calories_per_100g: String(product.calories_per_100g),
         protein_per_100g: String(product.protein_per_100g),
         carbs_per_100g: String(product.carbs_per_100g),
@@ -41,6 +43,32 @@ export default function Edit({ product }: Props) {
                         onChange={(e) => setData('name', e.target.value)}
                     />
                     {errors.name && <div className="text-sm text-red-500">{errors.name}</div>}
+                </div>
+                <div>
+                    <label className="block font-medium">Category</label>
+
+                    <select
+                        value={data.category}
+                        onChange={(e) => setData('category', e.target.value)}
+                        className="mt-1 w-full rounded border p-2"
+                >       
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Meat">Meat</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Grains">Grains</option>
+                        <option value="Porridge">Porridge</option>
+                        <option value="Cereal">Cereal</option>
+                        <option value="Sauces">Sauces</option>
+                        <option value="Drinks">Drinks</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    {errors.category && (
+                    <div className="text-sm text-red-500">{errors.category}</div>
+                    )}
                 </div>
 
                 <div>

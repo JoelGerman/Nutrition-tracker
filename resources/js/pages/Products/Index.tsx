@@ -4,6 +4,7 @@ type Product = {
     id: number;
     user_id: number | null;
     name: string;
+    category: string;    
     calories_per_100g: number;
     protein_per_100g: number;
     carbs_per_100g: number;
@@ -13,6 +14,7 @@ type Product = {
 type Props = {
     products: Product[];
     search?: string;
+    category?: string;
     canCreateProducts: boolean;
     canAddToDay: boolean;
     canDeleteProducts: boolean;
@@ -61,6 +63,7 @@ function AddToDayForm({ product }: { product: Product }) {
 export default function Index({
     products,
     search = '',
+    category = '',
     canCreateProducts,
     canAddToDay,
     canDeleteProducts,
@@ -86,8 +89,9 @@ export default function Index({
                     const form = e.currentTarget;
                     const formData = new FormData(form);
                     const searchValue = formData.get('search') as string;
+                    const categoryValue = formData.get('category') as string;
 
-                    router.get('/products', { search: searchValue }, { preserveState: true });
+                    router.get('/products', { search: searchValue, category: categoryValue }, { preserveState: true });
                 }}
                 className="mb-4 flex gap-2"
             >
@@ -97,6 +101,33 @@ export default function Index({
                     placeholder="Search product..."
                     className="w-full rounded border p-2"
                 />
+                
+                <select
+                    name="category"
+                    defaultValue={category}
+                    onChange={(e) => {
+                        router.get(
+                            '/products',
+                            { search: search, category: e.target.value },
+                            { preserveState: true },
+                        );
+                    }}
+                    className="rounded border bg-white p-2 text-black"
+                >
+                    <option value="">All categories</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Grains">Grains</option>
+                    <option value="Porridge">Porridge</option>
+                    <option value="Cereal">Cereal</option>
+                    <option value="Sauces">Sauces</option>
+                    <option value="Drinks">Drinks</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Other">Other</option>
+                </select>
 
                 <button
                     type="submit"
@@ -111,6 +142,7 @@ export default function Index({
                     <thead>
                         <tr className="border-b">
                             <th className="p-3">Name</th>
+                            <th className="p-3">Category</th>
                             <th className="p-3">Calories / 100g</th>
                             <th className="p-3">Protein / 100g</th>
                             <th className="p-3">Carbs / 100g</th>
@@ -123,6 +155,7 @@ export default function Index({
                         {products.map((product) => (
                             <tr key={product.id} className="border-b">
                                 <td className="p-3">{product.name}</td>
+                                <td className="p-3">{product.category}</td>
                                 <td className="p-3">{product.calories_per_100g}</td>
                                 <td className="p-3">{product.protein_per_100g}</td>
                                 <td className="p-3">{product.carbs_per_100g}</td>

@@ -13,6 +13,7 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->input('search');
+        $category = $request->input('category');
         $user = $request->user();
 
         $products = Product::query()
@@ -28,12 +29,16 @@ class ProductController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
             ->orderBy('name')
             ->get();
 
         return Inertia::render('Products/Index', [
             'products' => $products,
             'search' => $search,
+            'category' => $category,
             'canCreateProducts' => $user !== null,
             'canAddToDay' => $user !== null,
             'canDeleteProducts' => $user?->isAdmin() ?? false,
@@ -50,6 +55,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', 'max:255'],
             'calories_per_100g' => ['required', 'numeric', 'min:0'],
             'protein_per_100g' => ['required', 'numeric', 'min:0'],
             'carbs_per_100g' => ['required', 'numeric', 'min:0'],
@@ -59,6 +65,7 @@ class ProductController extends Controller
         Product::create([
             'user_id' => $request->user()?->id,
             'name' => $validated['name'],
+            'category' => $validated['category'],
             'calories_per_100g' => $validated['calories_per_100g'],
             'protein_per_100g' => $validated['protein_per_100g'],
             'carbs_per_100g' => $validated['carbs_per_100g'],
@@ -73,8 +80,8 @@ class ProductController extends Controller
         $user = $request->user();
 
         abort_unless(
-        $user?->isAdmin() || $product->user_id === $user?->id,
-        403
+            $user?->isAdmin() || $product->user_id === $user?->id,
+            403
         );
         return Inertia::render('Products/Edit', [
             'product' => $product,
@@ -91,6 +98,7 @@ class ProductController extends Controller
         );
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', 'max:255'],
             'calories_per_100g' => ['required', 'numeric', 'min:0'],
             'protein_per_100g' => ['required', 'numeric', 'min:0'],
             'carbs_per_100g' => ['required', 'numeric', 'min:0'],
