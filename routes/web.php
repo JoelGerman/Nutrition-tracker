@@ -14,6 +14,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
+    Route::put('/dashboard/calorie-goal', [DashboardController::class, 'updateCalorieGoal'])
+    ->name('dashboard.calorie-goal.update');
+
     Route::get('/products/create', [ProductController::class, 'create'])
         ->name('products.create');
 
