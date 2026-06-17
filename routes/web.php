@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DailyEntryController;
 use App\Http\Controllers\ProductController;
@@ -13,6 +14,12 @@ Route::get('/products', [ProductController::class, 'index'])
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+
+    Route::get('/admin/users', [AdminUserController::class, 'index'])
+    ->name('admin.users.index');
+
+    Route::put('/admin/users/{user}/role', [AdminUserController::class, 'updateRole'])
+        ->name('admin.users.role.update');
 
     Route::put('/dashboard/calorie-goal', [DashboardController::class, 'updateCalorieGoal'])
     ->name('dashboard.calorie-goal.update');
