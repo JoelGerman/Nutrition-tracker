@@ -4,9 +4,21 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DailyEntryController;
 use App\Http\Controllers\ProductController;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::inertia('/', 'welcome')->name('home');
+
+Route::get('/language/{locale}', function (string $locale): RedirectResponse {
+    if (! in_array($locale, ['en', 'lv'])) {
+        abort(400);
+    }
+
+    Session::put('locale', $locale);
+
+    return back();
+})->name('language.switch');
 
 Route::get('/products', [ProductController::class, 'index'])
     ->name('products.index');
