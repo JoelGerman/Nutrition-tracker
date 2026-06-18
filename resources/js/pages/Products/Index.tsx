@@ -275,7 +275,10 @@ export default function Index({
                         {products.map((product) => (
                             <tr key={product.id} className="border-b">
                                 <td className="p-3">{product.name}</td>
-                                <td className="p-3">{product.category}</td>
+                                <td className="p-3">
+                                    {text.categories[product.category as keyof typeof text.categories] ??
+                                        product.category}
+                                </td>
                                 <td className="p-3">
                                     {product.calories_per_100g}
                                 </td>
@@ -301,36 +304,29 @@ export default function Index({
                                         </span>
                                     )}
                                 </td>
-
-                                <td className="p-3">
+                            <td className="p-3">
+                                {currentUserId &&
+                                (canDeleteProducts || product.user_id === currentUserId) ? (
                                     <div className="flex gap-2">
-                                        {(canDeleteProducts ||
-                                            product.user_id ===
-                                                currentUserId) && (
-                                            <a
-                                                href={`/products/${product.id}/edit`}
-                                                className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
-                                            >
-                                                {text.edit}
-                                            </a>
-                                        )}
-
-                                        {(canDeleteProducts ||
-                                            product.user_id ===
-                                                currentUserId) && (
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    router.delete(
-                                                        `/products/${product.id}`,
-                                                    );
-                                                }}
-                                                className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white"
-                                            >
-                                                {text.delete}
-                                            </button>
-                                        )}
-                                    </div>
+                                        <a
+                                            href={`/products/${product.id}/edit`}
+                                            className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
+                                        >
+                                            {text.edit}
+                                        </a>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                router.delete(`/products/${product.id}`);
+                                            }}
+                                            className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white"
+                                >
+                                            {text.delete}
+                                    </button>
+                                </div>
+                            ) : (
+                                        <span className="text-sm text-gray-400">-</span>
+                                    )}
                                 </td>
                             </tr>
                         ))}
