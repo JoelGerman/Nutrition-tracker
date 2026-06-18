@@ -181,7 +181,7 @@ export default function Index({
             {canCreateProducts && (
                 <a
                     href="/products/create"
-                    className="mb-4 inline-block rounded bg-white px-4 py-2 font-medium text-black"
+                    className="mb-4 inline-block rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700"
                 >
                     {text.addProduct}
                 </a>
@@ -242,7 +242,7 @@ export default function Index({
 
                 <button
                     type="submit"
-                    className="rounded bg-white px-4 py-2 font-medium text-black"
+                    className="rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700"
                 >
                     {text.search}
                 </button>
