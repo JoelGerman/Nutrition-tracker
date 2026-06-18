@@ -17,17 +17,33 @@ import type { NavItem } from '@/types';
 
 export function AppSidebar() {
     const page = usePage();
+
     const auth = page.props.auth as { user?: { role?: string } };
     const isAdmin = auth.user?.role === 'admin';
 
+    const locale = (page.props.locale ?? 'en') as 'en' | 'lv';
+
+    const text = {
+        en: {
+            dashboard: 'Dashboard',
+            products: 'Products',
+            userManagement: 'User management',
+        },
+        lv: {
+            dashboard: 'Panelis',
+            products: 'Produkti',
+            userManagement: 'Lietotāju pārvaldība',
+        },
+    }[locale];
+
     const mainNavItems: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: text.dashboard,
             href: dashboard(),
             icon: LayoutDashboard,
         },
         {
-            title: 'Products',
+            title: text.products,
             href: '/products',
             icon: Package,
         },
@@ -35,7 +51,7 @@ export function AppSidebar() {
 
     if (isAdmin) {
         mainNavItems.push({
-            title: 'User management',
+            title: text.userManagement,
             href: '/admin/users',
             icon: Users,
         });
