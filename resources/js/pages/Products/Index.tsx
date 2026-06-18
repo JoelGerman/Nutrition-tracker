@@ -44,32 +44,36 @@ function AddToDayForm({
         post('/daily-entries');
     }
 
-    return (
-        <form onSubmit={submit} className="flex items-center gap-2">
-            <input
-                type="number"
-                min="1"
-                step="1"
-                placeholder={text.grams}
-                value={data.amount}
-                onChange={(e) => setData('amount', e.target.value)}
-                className="w-24 rounded border p-2"
-            />
+ return (
+                <form onSubmit={submit} className="flex items-start gap-2">
+                    <div className="w-24">
+                        <input
+                            type="number"
+                            min="1"
+                            step="1"
+                            placeholder={text.grams}
+                            value={data.amount}
+                            onChange={(e) => setData('amount', e.target.value)}
+                            className="w-full rounded-lg border p-2"
+                        />
 
-            <button
-                type="submit"
-                disabled={processing}
-                className="rounded bg-white px-3 py-2 text-sm font-medium text-black"
-            >
-                {text.add}
-            </button>
+                        {errors.amount && (
+                            <div className="mt-1 text-xs text-red-500">
+                                {errors.amount}
+                            </div>
+                        )}
+                    </div>
 
-            {errors.amount && (
-                <div className="text-sm text-red-500">{errors.amount}</div>
-            )}
-        </form>
-    );
-}
+                        <button
+                        type="submit"
+                        disabled={processing}
+                        className="rounded-lg bg-green-600 px-3 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                        >
+                        {text.add}
+                </button>
+            </form>
+        );
+    }
 
 export default function Index({
     products,
