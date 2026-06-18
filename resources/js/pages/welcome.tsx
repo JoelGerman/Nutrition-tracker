@@ -22,6 +22,7 @@ export default function Welcome() {
             startTracking: 'Start tracking',
             alreadyAccount: 'I already have an account',
             openDashboard: 'Open dashboard',
+            browseProducts: 'Browse products',
         },
         lv: {
             label: 'Vienkārša ikdienas uztura uzskaite',
@@ -37,6 +38,7 @@ export default function Welcome() {
             startTracking: 'Sākt uzskaiti',
             alreadyAccount: 'Man jau ir konts',
             openDashboard: 'Atvērt paneli',
+            browseProducts: 'Apskatīt produktus',
         },
     }[locale];
 
@@ -110,6 +112,13 @@ export default function Welcome() {
                     </div>
 
                     <div className="mt-8 flex flex-wrap justify-center gap-3">
+                        <Link
+                            href="/products"
+                            className="rounded border border-green-600 px-5 py-3 font-medium text-green-700"
+                        >
+                            {text.browseProducts}
+                        </Link>
+
                         {auth.user ? (
                             <Link
                                 href={dashboard()}
