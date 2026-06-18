@@ -89,7 +89,7 @@ export default function Index({ entries, totals, calorieGoal }: Props) {
     }
 
     return (
-                <div className="mx-auto max-w-6xl p-6">
+                <div className="mx-auto max-w-5xl p-6">
             <div className="mb-6">
                 <div className="mb-6 flex items-center justify-between">
                     <div className="text-xl font-bold">
@@ -122,11 +122,11 @@ export default function Index({ entries, totals, calorieGoal }: Props) {
                     </div>
 
                     <a
-                        href="/products"
-                        className="rounded bg-white px-4 py-2 font-medium text-black"
-                    >
-                        {text.addFood}
-                    </a>
+                    href="/products"
+                    className="rounded-lg bg-green-600 px-5 py-3 font-medium text-white"
+                >
+                    {text.addFood}
+                </a>
                 </div>
             </div>
 
@@ -146,11 +146,11 @@ export default function Index({ entries, totals, calorieGoal }: Props) {
                     </div>
                 </div>
 
-                <div className="h-4 w-full overflow-hidden rounded bg-gray-800">
-                    <div
-                        className="h-full rounded bg-white"
-                        style={{ width: `${progress}%` }}
-                    />
+                <div className="h-5 w-full overflow-hidden rounded-full bg-gray-100">
+                <div
+                    className="h-full rounded-full bg-green-600"
+                    style={{ width: `${progress}%` }}
+                />
                 </div>
 
                 <form onSubmit={updateGoal} className="mt-4 flex items-end gap-2">
